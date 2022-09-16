@@ -34,3 +34,23 @@ return new class extends Migration
         Schema::dropIfExists('users');
     }
 };
+
+
+$table->id();
+$table->bigInteger('customer_id');
+$table->decimal('total_spent', $precision = 10, $scale = 2);
+$table->decimal('total_saving', $precision = 10, $scale = 2);
+$table->dateTime('transaction_at', $precision = 0);
+
+
+
+$table->id();
+$table->string('first_name');
+$table->string('last_name');
+$table->string('gender');
+$table->date('date_of_birth');
+$table->string('contact_number');
+$table->string('email');
+$table->timestamps();     
+
+
