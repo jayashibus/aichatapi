@@ -11,7 +11,7 @@
 ### Included
 
 ```
- Markup : 1.Laravel project files
+1.Laravel project files
 2.Mysql
 3.Readme
 4.API Document
@@ -20,11 +20,16 @@
 
 ### Required
 
+```
 1.PHP Version 8.1.10
 2.Laravel Version 9.30.0
 3.MySql/MariaDb
+```
 
 ### End Points
 
-http://127.0.0.1:8000/api/v1/vouchers/{customerId}
-http://127.0.0.1:8000/api/v1/redeemvouchers
+```
+1.http://127.0.0.1:8000/api/v1/vouchers/{customerId}
+2.http://127.0.0.1:8000/api/v1/redeemvouchers
+
+```
