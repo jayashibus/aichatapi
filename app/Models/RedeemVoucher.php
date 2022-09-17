@@ -5,12 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Voucher extends Model
+class RedeemVoucher extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'customer_id',
-        'status',
-        'code',
-    ];
 }

@@ -26,12 +26,14 @@ class UpdateVoucherRequest extends FormRequest
         $method = $this->method();
         if($method =='PUT') {
             return [
-                'customer_id' => ['required'],          
+                'customer_id' => ['required'],
+                'status' => ['required'],             
             ];
         }
         else{
             return [                
                'customer_id'=> ['sometimes','required'],
+               'status' => ['sometimes','required'],
             ];
         }
     }

@@ -24,7 +24,7 @@ Route::group(['prefix' => 'v1', 'namespace'=>'App\Http\Controllers\Api\V1'], fun
     Route :: apiResource('invoices', InvoiceController::class);
     Route :: apiResource('posts', PostController::class);
     Route :: apiResource('vouchers', VoucherController::class);
-
+    Route :: apiResource('redeemvouchers', RedeemVoucherController::class);
 });
 
 
