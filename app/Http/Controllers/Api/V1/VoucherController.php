@@ -71,7 +71,7 @@ class VoucherController extends Controller
 
         if(count($alreadyLocked) == 1)
         {
-            $message = "Already your code is locked. Plz proceed to upload the selfie with ABC products ";
+            $message = "Already your code is locked. Plz proceed to upload the selfie with ABC product to verify";
             return response()->json([
                 'message' => $message,
                     ], 200);
