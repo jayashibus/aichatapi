@@ -55,16 +55,39 @@ class VoucherController extends Controller
      */
     public function show(Voucher $voucher)
     {
-       // $availbleVoucher = DB::table('vouchers')->status;
-       // $availbleVoucher = DB::table('vouchers')->where('status', 'A')->count();
-        $availbleVoucher = DB::table('vouchers')->where('status', 'A')->get();
-       
-            // $message = "Access Denied/Record not found";
-            // return response()->json([
-            //     'message' => $message,
-            //         ], 404);
+        $alreadyRedeemed = DB::table('vouchers')->where('customer_id', $voucher->id)->where('status', 'I')->get();
+        $alreadyLocked = DB::table('vouchers')->where('customer_id', $voucher->id)->where('status', 'L')->get();
+        $validCustomer = DB::table('customers')->where('id', $voucher->id)->get();
+        $availbleVoucherCode = DB::table('vouchers')->where('status', 'A')->get();
 
-           if (count($availbleVoucher) == 0)
+        if(count($alreadyRedeemed) == 1)
+        {
+            $message = "Access Denied/Already Redeemed";
+            return response()->json([
+                'message' => $message,
+                    ], 404);
+
+        }
+
+        if(count($alreadyLocked) == 1)
+        {
+            $message = "Already your code is locked. Plz proceed to upload the selfie with ABC products ";
+            return response()->json([
+                'message' => $message,
+                    ], 200);
+
+        }
+
+        if (count($validCustomer) == 0)
+            {
+                $message = "Access Denied/Record not found";
+            return response()->json([
+                'message' => $message,
+                    ], 404);
+
+            }
+       
+           if (count($availbleVoucherCode) == 0)
             {
                 $message = "Access Denied/Record not found";
             return response()->json([
@@ -73,7 +96,6 @@ class VoucherController extends Controller
 
             }
 
-       
             $message = "Sorry. You are not eligible to redeem the voucher";
         $verify = DB::table('invoices')
         ->leftJoin('vouchers', 'invoices.customer_id', '=', 'vouchers.customer_id')
@@ -95,29 +117,10 @@ class VoucherController extends Controller
             $message = "You are  eligible to redeem the voucher. Please upload the photo with ABC product and redeem  the cash card";
         }
 
-        //return response()->json(['error' => 'Unauthorized'], 401, ['X-Header-One' => 'Header Value']);
-       
-
        return response()->json([
         'message' => $message,
     ], 200);
 
-        
-        
-    
-
-    // if ($request->is('api/*')) {
-    //     return response()->json([
-    //         'message' => 'Record not found.'
-    //     ], 404);
-    // }
-
-
-       // $count = count($price);
-       
-        //return new VoucherResource($verify->data);
-
-      //  SELECT * FROM invoices LEFT JOIN vouchers on invoices.customer_id = vouchers.customer_id WHERE vouchers.customer_id IS NULL;
 
        // return $count;
     }

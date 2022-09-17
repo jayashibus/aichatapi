@@ -49,6 +49,25 @@ class RedeemVoucherController extends Controller
 
         if($imageName)
         {
+            $validCustmer = DB::table('vouchers')->where('customer_id', $request->customerId)->get();
+            if(count($validCustmer) == 0)
+            {
+                $message = "Access Denied/Record not found";
+                return response()->json([
+                    'message' => $message,
+                        ], 404);
+            }
+            
+            $alreadyRedeemed = DB::table('vouchers')->where('customer_id', $request->customerId)->where('status', 'I')->get();
+            if(count($alreadyRedeemed) == 1)
+            {
+                $message = "Access Denied/Already redeemed";
+                return response()->json([
+                    'message' => $message,
+                        ], 404);
+            }
+
+
             
             $availbleVoucher = DB::table('vouchers')->where('status', 'L')->where('customer_id', $request->customerId)->first();          
                 $noofminutes =  now()->diffInMinutes($availbleVoucher->issued_at);
@@ -74,13 +93,8 @@ class RedeemVoucherController extends Controller
 
         return  response()->json([
             'message' => $message,
-            'imagename' => $imageName,
-            'customerid' => $request->customer_id,
-            'availblevoucher' => $availbleVoucher->code,
-            'voucher_issued' => $availbleVoucher->issued_at,
+            'voucherCode' => $availbleVoucher->code,
             'TimeDifference' => $noofminutes,
-           
-
          ], 200);     
     }
 
