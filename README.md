@@ -1,12 +1,12 @@
 ### API for frontend development
 
 1. Customer eligible check
-   ○ Check the customer eligibility requirement.
-   ○ If qualified, lockdown a voucher for 10 minutes to this customer.
+    - Check the customer eligibility requirement.
+    - If qualified, lockdown a voucher for 10 minutes to this customer.
 2. Validate photo submission
-   ○ Call the image recognition API to validate the photo submission qualification. (Please faking this process for now, you do not need to create the image recognition API)
-   ○ If the image recognition result return is true and the submission within 10 minutes, allocate the locked voucher to the customer and return the voucher code.
-   ○ If the result return is false or submission exceeds 10 minutes, remove the lock down and this voucher will become available to the next customer to grab.
+    - Call the image recognition API to validate the photo submission qualification. (Please faking this process for now, you do not need to create the image recognition API)
+    - If the image recognition result return is true and the submission within 10 minutes, allocate the locked voucher to the customer and return the voucher code.
+    - If the result return is false or submission exceeds 10 minutes, remove the lock down and this voucher will become available to the next customer to grab.
 
 ### Included
 
