@@ -38,26 +38,39 @@ class RedeemVoucherController extends Controller
     public function store(StoreRedeemVoucherRequest $request)
     {
         $request->validate([
-            'image' => 'required|image|mimes:png,jpg,jpeg|max:2048'
+            'selfieImage' => 'required|image|mimes:png,jpg,jpeg|max:2048',
+            'customerId' => 'required'
         ]);
 
-        $imageName = time().'.'.$request->image->extension();
+        $imageName = time().'.'.$request->selfieImage->extension();
 
         // Public Folder
         //$request->image->move(public_path('images'), $imageName);
 
         if($imageName)
         {
-            $availbleVoucher = DB::table('vouchers')->where('status', 'L')->where('customer_id', $request->customer_id)->first();
-            $noofminutes =  now()->diffInMinutes($availbleVoucher->issued_at);
-            if($noofminutes >=10)
-            {
-                $message = "You coupon code expired.";
-            }
-            else{
-                $message = "You are successfully redeemed you cash voucher. Your code : $availbleVoucher->code.";
-            }
-        }
+            
+            $availbleVoucher = DB::table('vouchers')->where('status', 'L')->where('customer_id', $request->customerId)->first();          
+                $noofminutes =  now()->diffInMinutes($availbleVoucher->issued_at);
+
+          
+                if($noofminutes >=10)
+                {
+                    $affected = DB::table('vouchers')
+                    ->where('code', $availbleVoucher->code)
+                    ->update(['customer_id' => NULL, 'status' => 'A', 'issued_at' => now(), 'updated_at' => now()]);
+                    $message = "You coupon code expired. Request new code";
+                }
+                else{
+                    $affected = DB::table('vouchers')
+                    ->where('code', $availbleVoucher->code)
+                    ->update(['status' => 'I', 'issued_at' => now(), 'updated_at' => now()]);
+                    $message = "You are successfully redeemed you cash voucher. Your code : $availbleVoucher->code.";
+                }
+            
+            
+        }       
+        
 
         return  response()->json([
             'message' => $message,
@@ -66,6 +79,7 @@ class RedeemVoucherController extends Controller
             'availblevoucher' => $availbleVoucher->code,
             'voucher_issued' => $availbleVoucher->issued_at,
             'TimeDifference' => $noofminutes,
+           
 
          ], 200);     
     }

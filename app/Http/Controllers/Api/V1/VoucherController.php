@@ -55,7 +55,26 @@ class VoucherController extends Controller
      */
     public function show(Voucher $voucher)
     {
-        $message = "Sorry. You are not eligible to redeem the voucher";
+       // $availbleVoucher = DB::table('vouchers')->status;
+       // $availbleVoucher = DB::table('vouchers')->where('status', 'A')->count();
+        $availbleVoucher = DB::table('vouchers')->where('status', 'A')->get();
+       
+            // $message = "Access Denied/Record not found";
+            // return response()->json([
+            //     'message' => $message,
+            //         ], 404);
+
+           if (count($availbleVoucher) == 0)
+            {
+                $message = "Access Denied/Record not found";
+            return response()->json([
+                'message' => $message,
+                    ], 404);
+
+            }
+
+       
+            $message = "Sorry. You are not eligible to redeem the voucher";
         $verify = DB::table('invoices')
         ->leftJoin('vouchers', 'invoices.customer_id', '=', 'vouchers.customer_id')
         ->where('invoices.customer_id', $voucher->id)
@@ -82,9 +101,16 @@ class VoucherController extends Controller
        return response()->json([
         'message' => $message,
     ], 200);
+
+        
+        
     
 
-
+    // if ($request->is('api/*')) {
+    //     return response()->json([
+    //         'message' => 'Record not found.'
+    //     ], 404);
+    // }
 
 
        // $count = count($price);
